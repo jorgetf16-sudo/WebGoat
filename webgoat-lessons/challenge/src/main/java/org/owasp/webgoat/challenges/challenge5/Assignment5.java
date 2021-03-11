@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -62,10 +63,12 @@ public class Assignment5 extends AssignmentEndpoint {
         statement.setString(2,password_login);
         ResultSet resultSet = statement.executeQuery();
 
-        if (resultSet.next()) {
-            return success(this).feedback("challenge.solved").feedbackArgs(Flag.FLAGS.get(5)).build();
-        } else {
-            return failed(this).feedback("challenge.close").build();
+
+            if (resultSet.next()) {
+                return success(this).feedback("challenge.solved").feedbackArgs(Flag.FLAGS.get(5)).build();
+            } else {
+                return failed(this).feedback("challenge.close").build();
             }
         }
     }
+
