@@ -36,6 +36,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @RestController
 @Slf4j
@@ -56,12 +57,10 @@ public class Assignment5 extends AssignmentEndpoint {
         if (!"Larry".equals(username_login)) {
             return failed(this).feedback("user.not.larry").feedbackArgs(username_login).build();
         }
-        Connection connection=null;
-        PreparedStatement statement=null;
-        try  {
-            connection = dataSource.getConnection();
+
+        try( var connection = dataSource.getConnection()) {
             String query = "SELECT password FROM challenge_users WHERE userid = ? AND password = ?";
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username_login);
             statement.setString(2, password_login);
             ResultSet resultSet = statement.executeQuery();
@@ -70,10 +69,6 @@ public class Assignment5 extends AssignmentEndpoint {
             } else {
                 return failed(this).feedback("challenge.close").build();
             }
-        }
-        finally{
-            connection.close();
-            statement.close();
         }
     }
 }
