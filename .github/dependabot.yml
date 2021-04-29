@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.glassfish.jaxb:jaxb-runtime
+    versions:
+    - 3.0.0
+  - dependency-name: org.webjars:bootstrap
+    versions:
+    - 4.6.0
+  - dependency-name: com.thoughtworks.xstream:xstream
+    versions:
+    - 1.4.15
